@@ -61,13 +61,24 @@ function playerElement(player) {
         playerElement = document.createElement("a-camera");
         playerElement.setAttribute("update-movement", "");
         var box = document.createElement("a-box");
+        var face = document.createElement("a-plane");
+        face.setAttribute("src", "http://i.imgur.com/PbDicd4.png");
+        face.setAttribute("position", "0 0 -0.51");
+        face.setAttribute("rotation", " 0 180 0");
+        box.appendChild(face);
         var cursor = document.createElement("a-cursor");
 
         playerElement.appendChild(cursor);
         playerElement.appendChild(box);
     } else {
         var playerElement = document.createElement("a-box");
+        playerElement.setAttribute("material", "envMap: #smile;");
         playerElement.setAttribute("position", player.position);
+        var face = document.createElement("a-plane");
+        face.setAttribute("src", "http://i.imgur.com/PbDicd4.png");
+        face.setAttribute("position", "0 0 -0.51");
+        face.setAttribute("rotation", " 0 180 0");
+        playerElement.appendChild(face);
     }
 
     playerElement.setAttribute("id", player.id);
