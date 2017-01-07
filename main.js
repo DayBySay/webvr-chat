@@ -72,10 +72,9 @@ function initPlayerElementsWithPlayers(players, targetElement) {
 
 AFRAME.registerComponent("update-movement", {
     tick: function () {
-        console.log(this.el.getAttribute("position"));
-        console.log(player.position);
         if (this.el.getAttribute("position").x != player.position.x || this.el.getAttribute("position").z != player.position.z) {
-            //TODO: 変更時の処理
+            player.position = this.el.position;
+            socket.emit("update", player);
         }
     }
 });
