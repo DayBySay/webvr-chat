@@ -10,6 +10,13 @@ socket.on("connect", function(){
 socket.on("update", function(other){
     console.log("update");
     players[other.id] = other;
+    var otherElement = document.getElementById(other.id);
+    console.log(otherElement);
+    if (otherElement == null) {
+        otherElement = initPlayer(document.getElementById("player-area"), other);
+    } else {
+        otherElement.setAttribute("position", other.position);
+    }
 });
 
 socket.on("init_players", function (players){
@@ -70,10 +77,18 @@ function initPlayerElementsWithPlayers(players, targetElement) {
     }
 }
 
+function initPlayer(targetElement, player) {
+    console.log(player);
+    var pe = playerElement(player) 
+    targetElement.appendChild(pe);
+    return pe;
+}
+
 AFRAME.registerComponent("update-movement", {
     tick: function () {
-        if (this.el.getAttribute("position").x != player.position.x || this.el.getAttribute("position").z != player.position.z) {
-            player.position = this.el.position;
+        var elPosition = this.el.getAttribute("position");
+        if (elPosition.x != player.position.x || elPosition.z != player.position.z) {
+            player.position = elPosition;
             socket.emit("update", player);
         }
     }
