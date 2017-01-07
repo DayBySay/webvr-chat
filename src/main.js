@@ -76,19 +76,51 @@ function updateOther(other) {
 }
 
 function updatePlayer(player) {
-    var pe = document.getElementById(player.id);
-    pe.setAttribute("position", player.position);
+    var playerElement = document.getElementById(player.id);
+    playerElement.setAttribute("position", player.position);
+}
+
+function playerElement(player) {
+    var playerElement;
+
+    if (player.id == window.player.id) {
+        playerElement = document.createElement("a-camera");
+        playerElement.setAttribute("update-movement", "");
+        var box = document.createElement("a-box");
+        var face = document.createElement("a-plane");
+        face.setAttribute("src", "#smile");
+        face.setAttribute("position", "0 0 -0.51");
+        face.setAttribute("rotation", " 0 180 0");
+        box.appendChild(face);
+        var cursor = document.createElement("a-cursor");
+
+        playerElement.appendChild(cursor);
+        playerElement.appendChild(box);
+    } else {
+        var playerElement = document.createElement("a-box");
+        playerElement.setAttribute("material", "envMap: #smile;");
+        playerElement.setAttribute("position", player.position);
+        var face = document.createElement("a-plane");
+        face.setAttribute("src", "#smile");
+        face.setAttribute("position", "0 0 -0.51");
+        face.setAttribute("rotation", " 0 180 0");
+        playerElement.appendChild(face);
+    }
+
+    playerElement.setAttribute("id", player.id);
+
+    return playerElement;
 }
 
 function initPlayerElementsWithPlayers(players, targetElement) {
     for (var playerID in players) {
-        var pe = window.player.element(players[playerID]);
+        var pe = playerElement(players[playerID]);
         targetElement.appendChild(pe);
     }
 }
 
 function initPlayerElement(targetElement, player) {
-    var pe = window.player.element(player) 
+    var pe = playerElement(player) 
     targetElement.appendChild(pe);
 }
 
