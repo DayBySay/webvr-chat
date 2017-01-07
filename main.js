@@ -19,7 +19,7 @@ socket.on("init_players", function (players){
 
 function Player(id) {
     this.id = id;
-    this.position = {"x": 0, "y": 1, "z": 0};
+    this.position = {"x": 0, "y": 1.6, "z": 0};
 }
 
 function updatePlayer(player) {
@@ -71,4 +71,11 @@ function initPlayerElementsWithPlayers(players, targetElement) {
 }
 
 AFRAME.registerComponent("update-movement", {
+    tick: function () {
+        console.log(this.el.getAttribute("position"));
+        console.log(player.position);
+        if (this.el.getAttribute("position").x != player.position.x || this.el.getAttribute("position").z != player.position.z) {
+            //TODO: 変更時の処理
+        }
+    }
 });
