@@ -8,8 +8,8 @@ socket.on("connect", function(){
 });
 
 socket.on("update", function(other){
-    players[plyaer.id] = other;
-    console.log(other);
+    console.log("update");
+    players[other.id] = other;
 });
 
 socket.on("init_players", function (players){
@@ -20,6 +20,11 @@ socket.on("init_players", function (players){
 function Player(id) {
     this.id = id;
     this.position = {"x": 0, "y": 1, "z": 0};
+}
+
+function updatePlayer(player) {
+    var playerElement = document.getElementById(player.id);
+    playerElement.setAttribute("position", player.position);
 }
 
 function playersWithPlayerIDs(playerIDs) {
@@ -42,6 +47,7 @@ function playerElement(player) {
 
     if (player.id == window.player.id) {
         playerElement = document.createElement("a-camera");
+        playerElement.setAttribute("update-movement", "");
         var box = document.createElement("a-box");
         var cursor = document.createElement("a-cursor");
 
@@ -52,6 +58,8 @@ function playerElement(player) {
         playerElement.setAttribute("position", player.position);
     }
 
+    playerElement.setAttribute("id", player.id);
+
     return playerElement;
 }
 
@@ -61,3 +69,6 @@ function initPlayerElementsWithPlayers(players, targetElement) {
         targetElement.appendChild(pe);
     }
 }
+
+AFRAME.registerComponent("update-movement", {
+});

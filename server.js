@@ -17,6 +17,7 @@ io.sockets.on('connection', function(socket) {
         console.log(players);
 
         io.to(socket.id).emit("init_players", players);
+        socket.broadcast.emit("update", player);
     })
 
     socket.on("update", function(player){
