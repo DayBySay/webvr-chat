@@ -80,21 +80,6 @@ function updatePlayer(player) {
     playerElement.setAttribute("position", player.position);
 }
 
-function playersWithPlayerIDs(playerIDs) {
-    var players = new Object;
-    playerIDs.forEach(function (val, index, arr) {
-        var player = createPlayerWithPlayerID(val);
-        players[val] = player;
-    });
-
-    return players;
-}
-
-function createPlayerWithPlayerID(id) {
-    var player = new Player(id);
-    return player;
-}
-
 function playerElement(player) {
     var playerElement;
 
