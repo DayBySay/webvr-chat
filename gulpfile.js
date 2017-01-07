@@ -13,3 +13,7 @@ gulp.task("browserify", function () {
         .pipe(source("bundle.js"))
         .pipe(gulp.dest("public_html/js"));
 });
+
+gulp.task("watch", function () {
+    gulp.watch(["./src/main.js"], ["browserify"])
+});
