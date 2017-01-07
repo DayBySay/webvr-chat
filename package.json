@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "browserify src/main.js --verbose -o public_html/js/bundle.js"
+    "build": "gulp js"
   },
   "repository": {
     "type": "git",
