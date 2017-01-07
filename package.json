@@ -24,6 +24,7 @@
     "browserify": "^13.3.0",
     "gulp": "^3.9.1",
     "gulp-uglify": "^2.0.0",
+    "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   }
 }
