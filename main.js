@@ -1,5 +1,9 @@
 var playerIDs = ["hoge", "fuga"];
 var players = new Object;
+var socket = io.connect();
+var player = new Player("hoge");
+
+socket.emit("login", player);
 
 function Player(id) {
     this.id = id;
@@ -53,5 +57,3 @@ AFRAME.registerComponent('make-players', {
         initPlayerElementsWithPlayers(players, this.el);
     }
 });
-
-

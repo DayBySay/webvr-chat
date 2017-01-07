@@ -8,5 +8,14 @@ var server = http.createServer(app).listen(port);
 var socketio = require('socket.io');
 var io = socketio.listen(server);
 
+var playerIDs = new Object;
+
 io.sockets.on('connection', function(socket) {
+    socket.on("login", function (player) {
+        playerIDs[socket.id] = player;
+    })
+
+    socket.on("disconnect", function () {
+        delete playerIDs[socket.id]
+    })
 });
