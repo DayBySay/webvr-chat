@@ -1,10 +1,19 @@
 var players = new Object;
 var socket = io.connect();
 var player;
+var peer;
 
 socket.on("connect", function(){
-    player = new Player(socket.id);
-    socket.emit("login", player);
+    peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 3});
+
+    peer.on('open', function(){
+        player = new Player(peer.id);
+        console.log("peer id:" + peer.id);
+        socket.emit("login", player);
+    });
+
+    peer.on('call', function(call){
+    });
 });
 
 socket.on("update", function(other){
