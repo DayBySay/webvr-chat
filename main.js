@@ -23,7 +23,7 @@ function createPlayerWithPlayerID(id) {
 }
 
 function playerElement(player) {
-    var playerElement = document.createElement("a-cube");
+    var playerElement = document.createElement("a-box");
     playerElement.setAttribute("position", player.position);
 
     if (player.id == "hoge") {
@@ -47,8 +47,21 @@ function initPlayerElementsWithPlayers(players, targetElement) {
 AFRAME.registerComponent('make-players', {
     init: function () {
         players =  playersWithPlayerIDs(playerIDs);
-        initPlayerElementsWithPlayers(players, this.el);
+        // initPlayerElementsWithPlayers(players, this.el);
     }
 });
 
 
+AFRAME.registerComponent('cursor-listener', {
+    init: function () {
+        this.el.addEventListener("click", function(evt) {
+            var cube = document.createElement("a-box");
+            cube.setAttribute("position", "10 0 0");
+            console.log(cube);
+            var scene = document.getElementById("scene");
+            console.log(scene);
+            scene.appendChild(cube);
+            console.log("uhouho");
+        });
+    }
+});
