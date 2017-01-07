@@ -4,7 +4,7 @@ var browserify = require("browserify");
 var source = require("vinyl-source-stream");
 var buffer = require("vinyl-buffer");
 
-gulp.task("browserify", function () {
+gulp.task("js", function () {
     return browserify("./src/main.js")
         .bundle()
         .pipe(source("bundle.js"))
@@ -14,5 +14,5 @@ gulp.task("browserify", function () {
 });
 
 gulp.task("watch", function () {
-    gulp.watch(["./src/main.js"], ["browserify"])
+    gulp.watch(["./src/main.js"], ["js"])
 });
