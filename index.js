@@ -13,8 +13,8 @@ socket.on("connect", function(){
 
     peer.on('open', function(){
         console.log("peer open!!");
-        player = new Player(peer.id);
-        socket.emit("login", player);
+        window.player = new Player(peer.id);
+        socket.emit("login", window.player);
     });
 
     peer.on('call', function(call){
@@ -143,10 +143,10 @@ AFRAME.registerComponent("update-movement", {
     tick: function () {
         var elPosition = this.el.getAttribute("position");
         var elRotation = this.el.getAttribute("rotation");
-        if (elPosition.x != player.position.x || elPosition.z != player.position.z || elRotation.x != player.rotation.x || elRotation.y != player.rotation.y || elRotation.z != player.rotation.z) {
-            player.position = elPosition;
-            player.rotation = elRotation;
-            socket.emit("update", player);
+        if (elPosition.x != window.player.position.x || elPosition.z != window.player.position.z || elRotation.x != window.player.rotation.x || elRotation.y != window.player.rotation.y || elRotation.z != window.player.rotation.z) {
+            window.player.position = elPosition;
+            window.player.rotation = elRotation;
+            socket.emit("update", window.player);
         }
     }
 });
