@@ -8,10 +8,8 @@ socket.on("connect", function(){
 });
 
 socket.on("update", function(other){
-    console.log("update");
     players[other.id] = other;
     var otherElement = document.getElementById(other.id);
-    console.log(otherElement);
     if (otherElement == null) {
         otherElement = initPlayer(document.getElementById("player-area"), other);
     } else {
@@ -78,7 +76,6 @@ function initPlayerElementsWithPlayers(players, targetElement) {
 }
 
 function initPlayer(targetElement, player) {
-    console.log(player);
     var pe = playerElement(player) 
     targetElement.appendChild(pe);
     return pe;
