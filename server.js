@@ -28,6 +28,7 @@ io.sockets.on('connection', function(socket) {
     })
 
     socket.on("disconnect", function () {
+        socket.broadcast.emit("logout_other", players[socket.id]);
         delete players[socket.id]
         console.log("logout");
         console.log(players);

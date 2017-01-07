@@ -22,6 +22,11 @@ socket.on("init_players", function (players){
     initPlayerElementsWithPlayers(players, document.getElementById("player-area"));
 });
 
+socket.on("logout_other", function (other){
+    var oe = document.getElementById(other.id);
+    oe.parentNode.removeChild(oe);
+});
+
 function Player(id) {
     this.id = id;
     this.position = {"x": 0, "y": 1.6, "z": 0};
