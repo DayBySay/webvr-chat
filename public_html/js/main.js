@@ -1,3 +1,8 @@
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+var localStream;
+var connectedCall;
+
 var players = new Object;
 var socket = io.connect();
 var player;
@@ -7,13 +12,28 @@ socket.on("connect", function(){
     peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 3});
 
     peer.on('open', function(){
+        console.log("peer open!!");
         player = new Player(peer.id);
-        console.log("peer id:" + peer.id);
         socket.emit("login", player);
     });
 
     peer.on('call', function(call){
+        console.log("call kimashita!");
+        connectedCall = call;
+        call.answer(localStream);
+
+        call.on('stream', function(stream){
+        console.log("stream uketoruyo!!");
+            var url = URL.createObjectURL(stream);
+            var audio = document.getElementById("audio");
+            audio.srcObject = stream;
+            audio.play();
+        });
     });
+
+    navigator.getUserMedia({audio: true, video: false}, function(stream){
+        localStream = stream;
+    }, function() { alert("Error!"); });
 });
 
 socket.on("update", function(other){
@@ -21,6 +41,17 @@ socket.on("update", function(other){
     var otherElement = document.getElementById(other.id);
     if (otherElement == null) {
         otherElement = initPlayer(document.getElementById("player-area"), other);
+
+        var peerId = other.id;
+        var call = peer.call(peerId, localStream);
+        console.log("call shimasu!");
+
+        call.on('stream', function(stream){
+        console.log("call kakarimashita!!");
+            var url = URL.createObjectURL(stream);
+            var audio = document.getElementById("audio");
+            audio.srcObject = stream;
+        });
     } else {
         otherElement.setAttribute("position", other.position);
         otherElement.setAttribute("rotation", other.rotation);
