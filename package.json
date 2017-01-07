@@ -25,10 +25,8 @@
     "gulp": "^3.9.1",
     "gulp-uglify": "^2.0.0",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
-  },
-  "devDependencies": {
     "aframe": "^0.4.0",
-    "socket.io-client": "^1.7.2"
+    "socket.io-client": "^1.7.2",
+    "vinyl-source-stream": "^1.1.0"
   }
 }
