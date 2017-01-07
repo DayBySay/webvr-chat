@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "gulp js",
-    "postinstall": "gulp js"
+    "postinstall": "node_modules/.bin/gulp js"
   },
   "repository": {
     "type": "git",
