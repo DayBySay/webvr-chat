@@ -4,7 +4,7 @@ var localStream;
 var connectedCall;
 
 var players = new Object;
-var socket = io.connect();
+var socket = require("socket.io-client")();
 var player;
 var peer;
 
