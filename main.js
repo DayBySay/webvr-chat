@@ -14,6 +14,7 @@ socket.on("update", function(other){
         otherElement = initPlayer(document.getElementById("player-area"), other);
     } else {
         otherElement.setAttribute("position", other.position);
+        otherElement.setAttribute("rotation", other.rotation);
     }
 });
 
@@ -30,6 +31,7 @@ socket.on("logout_other", function (other){
 function Player(id) {
     this.id = id;
     this.position = {"x": 0, "y": 1.6, "z": 0};
+    this.rotation = {"x": 0, "y": 1.6, "z": 0};
 }
 
 function updatePlayer(player) {
@@ -89,8 +91,10 @@ function initPlayer(targetElement, player) {
 AFRAME.registerComponent("update-movement", {
     tick: function () {
         var elPosition = this.el.getAttribute("position");
-        if (elPosition.x != player.position.x || elPosition.z != player.position.z) {
+        var elRotation = this.el.getAttribute("rotation");
+        if (elPosition.x != player.position.x || elPosition.z != player.position.z || elRotation.x != player.rotation.x || elRotation.y != player.rotation.y || elRotation.z != player.rotation.z) {
             player.position = elPosition;
+            player.rotation = elRotation;
             socket.emit("update", player);
         }
     }
