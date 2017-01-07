@@ -12,18 +12,15 @@ socket.on("connect", function(){
     peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 3});
 
     peer.on('open', function(){
-        console.log("peer open!!");
         window.player = new Player(peer.id);
         socket.emit("login", window.player);
     });
 
     peer.on('call', function(call){
-        console.log("call kimashita!");
         connectedCall = call;
         call.answer(localStream);
 
         call.on('stream', function(stream){
-        console.log("stream uketoruyo!!");
             var url = URL.createObjectURL(stream);
             var audio = document.getElementById("audio");
             audio.srcObject = stream;
@@ -44,10 +41,8 @@ socket.on("update", function(other){
 
         var peerId = other.id;
         var call = peer.call(peerId, localStream);
-        console.log("call shimasu!");
 
         call.on('stream', function(stream){
-        console.log("call kakarimashita!!");
             var url = URL.createObjectURL(stream);
             var audio = document.getElementById("audio");
             audio.srcObject = stream;
