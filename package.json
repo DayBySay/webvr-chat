@@ -21,7 +21,9 @@
     "socket.io": "^1.7.2"
   },
   "devDependencies": {
+    "aframe": "^0.4.0",
     "browserify": "^13.3.0",
+    "envify": "^4.0.0",
     "gulp": "^3.9.1",
     "gulp-uglify": "^2.0.0",
     "vinyl-buffer": "^1.0.0",
