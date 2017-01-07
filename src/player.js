@@ -32,7 +32,6 @@ function player(player) {
 
 function other(player) {
     var pe = document.createElement("a-box");
-    pe.setAttribute("material", "envMap: #smile;");
     pe.setAttribute("position", player.position);
     pe.appendChild(face());
     return pe;
