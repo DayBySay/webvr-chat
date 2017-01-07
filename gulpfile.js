@@ -7,7 +7,9 @@ gulp.task("js", function () {
     gulp.src(["src/**/*.js", "!public_html/js/min/**/*.js"]).pipe(uglify()).pipe(gulp.dest("public_html/js/min"));
 });
 
-
 gulp.task("browserify", function () {
-    return browserify("./src/main.js").bundle().pipe(source("bundle.js")).pipe(gulp.dest("public_html/js"));
+    return browserify("./src/main.js")
+        .bundle()
+        .pipe(source("bundle.js"))
+        .pipe(gulp.dest("public_html/js"));
 });
