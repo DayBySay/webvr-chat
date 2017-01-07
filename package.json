@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-      "build": "browserify src/main.js --verbose -o public_html/js/bundle.js"
+    "build": "browserify src/main.js --verbose -o public_html/js/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "socket.io": "^1.7.2"
   },
   "devDependencies": {
-    "browserify": "^13.3.0"
+    "browserify": "^13.3.0",
+    "gulp": "^3.9.1"
   }
 }
