@@ -9,3 +9,9 @@ proc:
 
 deploy:
 	git push heroku master
+
+build:
+	npm run build
+
+build-auto:
+	gulp watch
