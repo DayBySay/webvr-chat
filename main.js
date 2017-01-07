@@ -3,7 +3,7 @@ var players = new Object;
 
 function Player(id) {
     this.id = id;
-    this.position = {"x": 0, "y": 0, "z": 0};
+    this.position = {"x": 0, "y": 1, "z": 0};
     this.shown = false;
 }
 
@@ -23,15 +23,18 @@ function createPlayerWithPlayerID(id) {
 }
 
 function playerElement(player) {
-    var playerElement = document.createElement("a-cube");
-    playerElement.setAttribute("position", player.position);
+    var playerElement;
 
     if (player.id == "hoge") {
-        var camera = document.createElement("a-camera");
+        playerElement = document.createElement("a-camera");
+        var box = document.createElement("a-box");
         var cursor = document.createElement("a-cursor");
 
-        camera.appendChild(cursor);
-        playerElement.appendChild(camera);
+        playerElement.appendChild(cursor);
+        playerElement.appendChild(box);
+    } else {
+        var playerElement = document.createElement("a-box");
+        playerElement.setAttribute("position", player.position);
     }
 
     return playerElement;
