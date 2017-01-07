@@ -1,14 +1,25 @@
-var playerIDs = ["hoge", "fuga"];
 var players = new Object;
 var socket = io.connect();
-var player = new Player("hoge");
+var player;
 
-socket.emit("login", player);
+socket.on("connect", function(){
+    player = new Player(socket.id);
+    socket.emit("login", player);
+});
+
+socket.on("update", function(other){
+    players[plyaer.id] = other;
+    console.log(other);
+});
+
+socket.on("init_players", function (players){
+    players = players;
+    initPlayerElementsWithPlayers(players, document.getElementById("player-area"));
+});
 
 function Player(id) {
     this.id = id;
     this.position = {"x": 0, "y": 1, "z": 0};
-    this.shown = false;
 }
 
 function playersWithPlayerIDs(playerIDs) {
@@ -29,7 +40,7 @@ function createPlayerWithPlayerID(id) {
 function playerElement(player) {
     var playerElement;
 
-    if (player.id == "hoge") {
+    if (player.id == window.player.id) {
         playerElement = document.createElement("a-camera");
         var box = document.createElement("a-box");
         var cursor = document.createElement("a-cursor");
@@ -50,10 +61,3 @@ function initPlayerElementsWithPlayers(players, targetElement) {
         targetElement.appendChild(pe);
     }
 }
-
-AFRAME.registerComponent('make-players', {
-    init: function () {
-        players =  playersWithPlayerIDs(playerIDs);
-        initPlayerElementsWithPlayers(players, this.el);
-    }
-});
