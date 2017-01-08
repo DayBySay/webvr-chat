@@ -58,7 +58,7 @@ function connectedServer() {
             let audio = audioElement(call.peer)
             audio.srcObject = stream
             audio.play()
-            document.getElementById("audio-area").appendChild(audio)
+            document.getElementById('audio-area').appendChild(audio)
         })
     })
 
@@ -81,17 +81,12 @@ function updateOther(other) {
             let audio = audioElement(peerId)
             audio.srcObject = stream
             audio.play()
-            document.getElementById("audio-area").appendChild(audio)
+            document.getElementById('audio-area').appendChild(audio)
         })
     } else {
         otherElement.setAttribute('position', other.position)
         otherElement.setAttribute('rotation', other.rotation)
     }
-}
-
-function updatePlayer(player) {
-    let playerElement = document.getElementById(player.id)
-    playerElement.setAttribute('position', player.position)
 }
 
 function playerElement(player) {
