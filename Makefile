@@ -17,4 +17,4 @@ watcher:
 	gulp watch
 
 lint:
-	npm run lint
+	node_modules/.bin/eslint ./src/*.js
