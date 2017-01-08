@@ -9,6 +9,7 @@ let localStream
 let connectedCall
 
 let players = new Object
+let dataConnections = new Object
 let socket = require('socket.io-client')()
 let player
 let peer
@@ -52,6 +53,11 @@ function connectedServer() {
         })
     })
 
+    window.peer.on('connection', function (conn) {
+        console.log('data connection kitaayo!!')
+        console.log(conn)
+    })
+
     navigator.getUserMedia({audio: true, video: false}, function(stream){
         localStream = stream
     }, function() { alert('Error!') })
@@ -62,6 +68,26 @@ function updateOther(other) {
     let otherElement = document.getElementById(other.id)
     if (otherElement == null) {
         Util.initPlayerElement(document.getElementById('player-area'), other)
+
+        console.log('data tsunagi masu')
+        console.log(peerId)
+        let dataConnection = window.peer.connect(peerId)
+
+        dataConnection.on('open', function () {
+            window.dataConnections[peerId] = dataConnection
+            console.log("open data connection!!")
+            console.log(window.dataConnections)
+        })
+
+        dataConnection.on('data', function (data) {
+            console.log('data kitayo')
+            console.log(data)
+        })
+
+        dataConnection.on('error', function (error) {
+            console.log(error);
+        })
+
 
         let peerId = other.id
         let call = window.peer.call(peerId, localStream)

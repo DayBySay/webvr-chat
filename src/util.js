@@ -1,5 +1,5 @@
 export default class Util {
-    const audioAreaSuffix = 'saudio'
+    const audioAreaSuffix = 'audio'
 
     static function audioElementWithPeerID(peerID) {
         let ae = document.getElementById(audioAreaSuffix + peerID)
