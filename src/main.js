@@ -1,6 +1,8 @@
-import aframe from 'aframe'
 import Player from './player'
 import socketio from 'socket.io-client'
+import aframe from 'aframe'
+import registerVideoBillboard from 'aframe-video-billboard';
+registerVideoBillboard(aframe);
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
