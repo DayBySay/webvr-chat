@@ -56,8 +56,9 @@ function connectedServer() {
         call.on('stream', function(stream){
             console.log('id: ' + call.peer + ' にcallされて繋がったよ！');
             var url = URL.createObjectURL(stream);
-            var audio = document.getElementById('audio');
-            audio.srcObject = stream;
+            var audio = audioElement(call.peer));
+            audio.srcObject = url;
+            document.getElementById("audio-area").appendChild(audio);
             audio.play();
         });
     });
@@ -79,8 +80,10 @@ function updateOther(other) {
         call.on('stream', function(stream){
             console.log('id: ' + peerId + ' にcallして繋がったよ！');
             var url = URL.createObjectURL(stream);
-            var audio = document.getElementById('audio');
-            audio.srcObject = stream;
+            var audio = audioElement(peerId);
+            audio.srcObject = url;
+            document.getElementById("audio-area").appendChild(audio);
+            audio.play();
         });
     } else {
         otherElement.setAttribute('position', other.position);
