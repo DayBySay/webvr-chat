@@ -53,4 +53,16 @@ export default class Util {
         face.setAttribute('rotation', ' 0 180 0')
         return face
     }
+
+    static function initPlayerElementsWithPlayers(players, targetElement) {
+        for (let playerID in players) {
+            let pe = Util.playerElementWithInitializedPlayer(window.player, players[playerID])
+            targetElement.appendChild(pe)
+        }
+    }
+
+    static function initPlayerElement(targetElement, player) {
+        let pe = playerElementWithInitializedPlayer(window.players, player) 
+        targetElement.appendChild(pe)
+    }
 }

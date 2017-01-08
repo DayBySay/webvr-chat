@@ -23,7 +23,7 @@ socket.on('update', function(other){
 
 socket.on('init_players', function (players){
     window.players = players
-    initPlayerElementsWithPlayers(players, document.getElementById('player-area'))
+    Util.initPlayerElementsWithPlayers(players, document.getElementById('player-area'))
 })
 
 socket.on('logout_other', function (other){
@@ -61,7 +61,7 @@ function updateOther(other) {
     players[other.id] = other
     let otherElement = document.getElementById(other.id)
     if (otherElement == null) {
-        initPlayerElement(document.getElementById('player-area'), other)
+        Util.initPlayerElement(document.getElementById('player-area'), other)
 
         let peerId = other.id
         let call = window.peer.call(peerId, localStream)
@@ -77,18 +77,6 @@ function updateOther(other) {
         otherElement.setAttribute('position', other.position)
         otherElement.setAttribute('rotation', other.rotation)
     }
-}
-
-function initPlayerElementsWithPlayers(players, targetElement) {
-    for (let playerID in players) {
-        let pe = Util.playerElementWithInitializedPlayer(window.player, players[playerID])
-        targetElement.appendChild(pe)
-    }
-}
-
-function initPlayerElement(targetElement, player) {
-    let pe = playerElementWithInitializedPlayer(window.players, player) 
-    targetElement.appendChild(pe)
 }
 
 AFRAME.registerComponent('update-movement', {
