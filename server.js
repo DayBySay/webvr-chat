@@ -16,6 +16,8 @@ io.sockets.on('connection', function(socket) {
 
         io.to(socket.id).emit("init_players", players);
         socket.broadcast.emit("update", player);
+        console.log("login");
+        console.log(players);
     })
 
     socket.on("update", function(player){
@@ -26,5 +28,7 @@ io.sockets.on('connection', function(socket) {
     socket.on("disconnect", function () {
         socket.broadcast.emit("logout_other", players[socket.id]);
         delete players[socket.id]
+        console.log("logout");
+        console.log(players);
     })
 });

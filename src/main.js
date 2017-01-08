@@ -31,7 +31,7 @@ socket.on("logout_other", function (other){
 });
 
 function connectedServer() {
-    peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 3});
+    peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 1});
 
     peer.on('open', function(){
         window.player = new Player(peer.id);
@@ -43,7 +43,7 @@ function connectedServer() {
         call.answer(localStream);
 
         call.on('stream', function(stream){
-            console.log("call されて繋がったよ！");
+            console.log("id: " + call.peer + " にcallされて繋がったよ！");
             var url = URL.createObjectURL(stream);
             var audio = document.getElementById("audio");
             audio.srcObject = stream;
@@ -66,7 +66,7 @@ function updateOther(other) {
         var call = peer.call(peerId, localStream);
 
         call.on('stream', function(stream){
-            console.log("call して繋がったよ！");
+            console.log("id: " + peerId + " にcallして繋がったよ！");
             var url = URL.createObjectURL(stream);
             var audio = document.getElementById("audio");
             audio.srcObject = stream;
