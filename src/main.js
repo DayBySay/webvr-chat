@@ -2,33 +2,33 @@ import aframe from 'aframe'
 import Player from './player'
 import socketio from 'socket.io-client'
 
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-let localStream
-let connectedCall
+var localStream;
+var connectedCall;
 
-let players = new Object
-let socket = require('socket.io-client')()
-let player
-let peer
+var players = new Object;
+var socket = require("socket.io-client")();
+var player;
+var peer;
 
-socket.on('connect', function(){
-    connectedServer()
-})
+socket.on("connect", function(){
+    connectedServer();
+});
 
-socket.on('update', function(other){
-    updateOther(other)
-})
+socket.on("update", function(other){
+    updateOther(other);
+});
 
-socket.on('init_players', function (players){
-    players = players
-    initPlayerElementsWithPlayers(players, document.getElementById('player-area'))
-})
+socket.on("init_players", function (players){
+    players = players;
+    initPlayerElementsWithPlayers(players, document.getElementById("player-area"));
+});
 
-socket.on('logout_other', function (other){
-    let oe = document.getElementById(other.id)
-    oe.parentNode.removeChild(oe)
-})
+socket.on("logout_other", function (other){
+    var oe = document.getElementById(other.id);
+    oe.parentNode.removeChild(oe);
+});
 
 function audioElement(peerID) {
     let ae = document.getElementById(peerID)
@@ -42,107 +42,109 @@ function audioElement(peerID) {
 }
 
 function connectedServer() {
-    peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 1})
+    peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 1});
 
     peer.on('open', function(){
-        window.player = new Player(peer.id)
-        socket.emit('login', window.player)
-    })
+        window.player = new Player(peer.id);
+        socket.emit("login", window.player);
+    });
 
     peer.on('call', function(call){
-        connectedCall = call
-        call.answer(localStream)
+        connectedCall = call;
+        call.answer(localStream);
 
         call.on('stream', function(stream){
-            console.log('id: ' + call.peer + ' にcallされて繋がったよ！')
-            let url = URL.createObjectURL(stream)
-            let audio = audioElement(call.peer)
-            audio.srcObject = url
-            audio.play()
-            document.getElementById('audio-area').appendChild(audio)
-        })
-    })
+            console.log("id: " + call.peer + " にcallされて繋がったよ！");
+            var url = URL.createObjectURL(stream);
+            var audio = document.getElementById("audio");
+            audio.srcObject = stream;
+            audio.play();
+        });
+    });
 
     navigator.getUserMedia({audio: true, video: false}, function(stream){
-        localStream = stream
-    }, function() { alert('Error!') })
+        localStream = stream;
+    }, function() { alert("Error!"); });
 }
 
 function updateOther(other) {
-    players[other.id] = other
-    let otherElement = document.getElementById(other.id)
+    players[other.id] = other;
+    var otherElement = document.getElementById(other.id);
     if (otherElement == null) {
-        initPlayerElement(document.getElementById('player-area'), other)
+        initPlayerElement(document.getElementById("player-area"), other);
 
-        let peerID = other.id
-        let call = peer.call(peerID, localStream)
+        var peerId = other.id;
+        var call = peer.call(peerId, localStream);
 
         call.on('stream', function(stream){
-            console.log('id: ' + peerID + ' にcallして繋がったよ！')
-            let url = URL.createObjectURL(stream)
-            let audio = audioElement(peerID)
-            audio.srcObject = url
-            audio.play()
-            document.getElementById('audio-area').appendChild(audio)
-        })
+            console.log("id: " + peerId + " にcallして繋がったよ！");
+            var url = URL.createObjectURL(stream);
+            var audio = document.getElementById("audio");
+            audio.srcObject = stream;
+        });
     } else {
-        otherElement.setAttribute('position', other.position)
-        otherElement.setAttribute('rotation', other.rotation)
+        otherElement.setAttribute("position", other.position);
+        otherElement.setAttribute("rotation", other.rotation);
     }
+}
+
+function updatePlayer(player) {
+    var playerElement = document.getElementById(player.id);
+    playerElement.setAttribute("position", player.position);
 }
 
 function playerElement(player) {
-    let playerElement
+    var playerElement;
 
     if (player.id == window.player.id) {
-        playerElement = document.createElement('a-camera')
-        playerElement.setAttribute('update-movement', '')
-        let box = document.createElement('a-box')
-        let face = document.createElement('a-plane')
-        face.setAttribute('src', '#smile')
-        face.setAttribute('position', '0 0 -0.51')
-        face.setAttribute('rotation', ' 0 180 0')
-        box.appendChild(face)
-        let cursor = document.createElement('a-cursor')
+        playerElement = document.createElement("a-camera");
+        playerElement.setAttribute("update-movement", "");
+        var box = document.createElement("a-box");
+        var face = document.createElement("a-plane");
+        face.setAttribute("src", "#smile");
+        face.setAttribute("position", "0 0 -0.51");
+        face.setAttribute("rotation", " 0 180 0");
+        box.appendChild(face);
+        var cursor = document.createElement("a-cursor");
 
-        playerElement.appendChild(cursor)
-        playerElement.appendChild(box)
+        playerElement.appendChild(cursor);
+        playerElement.appendChild(box);
     } else {
-        let playerElement = document.createElement('a-box')
-        playerElement.setAttribute('material', 'envMap: #smile')
-        playerElement.setAttribute('position', player.position)
-        let face = document.createElement('a-plane')
-        face.setAttribute('src', '#smile')
-        face.setAttribute('position', '0 0 -0.51')
-        face.setAttribute('rotation', ' 0 180 0')
-        playerElement.appendChild(face)
+        var playerElement = document.createElement("a-box");
+        playerElement.setAttribute("material", "envMap: #smile;");
+        playerElement.setAttribute("position", player.position);
+        var face = document.createElement("a-plane");
+        face.setAttribute("src", "#smile");
+        face.setAttribute("position", "0 0 -0.51");
+        face.setAttribute("rotation", " 0 180 0");
+        playerElement.appendChild(face);
     }
 
-    playerElement.setAttribute('id', player.id)
+    playerElement.setAttribute("id", player.id);
 
-    return playerElement
+    return playerElement;
 }
 
 function initPlayerElementsWithPlayers(players, targetElement) {
-    for (let playerID in players) {
-        let pe = playerElement(players[playerID])
-        targetElement.appendChild(pe)
+    for (var playerID in players) {
+        var pe = playerElement(players[playerID]);
+        targetElement.appendChild(pe);
     }
 }
 
 function initPlayerElement(targetElement, player) {
-    let pe = playerElement(player) 
-    targetElement.appendChild(pe)
+    var pe = playerElement(player) 
+    targetElement.appendChild(pe);
 }
 
-AFRAME.registerComponent('update-movement', {
+AFRAME.registerComponent("update-movement", {
     tick: function () {
-        let elPosition = this.el.getAttribute('position')
-        let elRotation = this.el.getAttribute('rotation')
+        var elPosition = this.el.getAttribute("position");
+        var elRotation = this.el.getAttribute("rotation");
         if (elPosition.x != window.player.position.x || elPosition.z != window.player.position.z || elRotation.x != window.player.rotation.x || elRotation.y != window.player.rotation.y || elRotation.z != window.player.rotation.z) {
-            window.player.position = elPosition
-            window.player.rotation = elRotation
-            socket.emit('update', window.player)
+            window.player.position = elPosition;
+            window.player.rotation = elRotation;
+            socket.emit("update", window.player);
         }
     }
-})
+});
