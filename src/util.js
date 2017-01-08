@@ -65,8 +65,8 @@ export default class Util {
         }
     }
 
-    static initPlayerElement(targetElement, player) {
-        let pe = this.playerElementWithInitializedPlayer(players, player) 
+    static initPlayerElement(targetElement, player, other) {
+        let pe = this.playerElementWithInitializedPlayer(player, other) 
         console.log(pe)
         targetElement.appendChild(pe)
     }

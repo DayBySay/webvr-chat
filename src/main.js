@@ -1,6 +1,6 @@
 import aframe from 'aframe'
-import Player from './player'
 import socketio from 'socket.io-client'
+import Player from './player'
 import Util from './util'
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
@@ -8,8 +8,8 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 let localStream
 let connectedCall
 
-let players = new Object
-let dataConnections = new Object
+window. players = {}
+window. dataConnections = {}
 let socket = require('socket.io-client')()
 let player
 let peer
@@ -67,10 +67,20 @@ function updateOther(other) {
     players[other.id] = other
     let otherElement = document.getElementById(other.id)
     if (otherElement == null) {
-        Util.initPlayerElement(document.getElementById('player-area'), other)
+        Util.initPlayerElement(document.getElementById('player-area'), window.player, other)
+
+        let peerId = other.id
+        let call = window.peer.call(peerId, localStream)
+
+        call.on('stream', function(stream){
+            console.log('id: ' + peerId + ' にcallして繋がったよ！')
+            let audio = Util.audioElementWithPeerID(peerId)
+            audio.srcObject = stream
+            audio.play()
+            document.getElementById('audio-area').appendChild(audio)
+        })
 
         console.log('data tsunagi masu')
-        console.log(peerId)
         let dataConnection = window.peer.connect(peerId)
 
         dataConnection.on('open', function () {
@@ -88,17 +98,6 @@ function updateOther(other) {
             console.log(error);
         })
 
-
-        let peerId = other.id
-        let call = window.peer.call(peerId, localStream)
-
-        call.on('stream', function(stream){
-            console.log('id: ' + peerId + ' にcallして繋がったよ！')
-            let audio = Util.audioElementWithPeerID(peerId)
-            audio.srcObject = stream
-            audio.play()
-            document.getElementById('audio-area').appendChild(audio)
-        })
     } else {
         otherElement.setAttribute('position', other.position)
         otherElement.setAttribute('rotation', other.rotation)
@@ -112,7 +111,13 @@ AFRAME.registerComponent('update-movement', {
         if (elPosition.x != window.player.position.x || elPosition.z != window.player.position.z || elRotation.x != window.player.rotation.x || elRotation.y != window.player.rotation.y || elRotation.z != window.player.rotation.z) {
             window.player.position = elPosition
             window.player.rotation = elRotation
-            socket.emit('update', window.player)
+            // socket.emit('update', window.player)
+            for (let peerID in window.dataConnections) {
+                let connection = window.dataConnections[peerID]
+                connection.send(window.player.flatObject)
+                console.log(window.player.flatObject);
+                console.log("data soushin!!")
+            }
         }
     }
 })
