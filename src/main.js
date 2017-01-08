@@ -43,6 +43,7 @@ function connectedServer() {
         call.answer(localStream);
 
         call.on('stream', function(stream){
+            console.log("call されて繋がったよ！");
             var url = URL.createObjectURL(stream);
             var audio = document.getElementById("audio");
             audio.srcObject = stream;
@@ -65,6 +66,7 @@ function updateOther(other) {
         var call = peer.call(peerId, localStream);
 
         call.on('stream', function(stream){
+            console.log("call して繋がったよ！");
             var url = URL.createObjectURL(stream);
             var audio = document.getElementById("audio");
             audio.srcObject = stream;
