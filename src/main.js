@@ -1,6 +1,6 @@
-require("aframe");
-require("socket.io-client");
-var Player = require("./player");
+import aframe from 'aframe'
+import Player from './player'
+import socketio from 'socket.io-client'
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
