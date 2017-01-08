@@ -4,13 +4,13 @@ import socketio from 'socket.io-client'
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
 
-var localStream
-var connectedCall
+let localStream
+let connectedCall
 
-var players = new Object
-var socket = require('socket.io-client')()
-var player
-var peer
+let players = new Object
+let socket = require('socket.io-client')()
+let player
+let peer
 
 socket.on('connect', function(){
     connectedServer()
@@ -26,7 +26,7 @@ socket.on('init_players', function (players){
 })
 
 socket.on('logout_other', function (other){
-    var oe = document.getElementById(other.id)
+    let oe = document.getElementById(other.id)
     oe.parentNode.removeChild(oe)
 })
 
@@ -55,7 +55,7 @@ function connectedServer() {
 
         call.on('stream', function(stream){
             console.log('id: ' + call.peer + ' にcallされて繋がったよ！')
-            var audio = audioElement(call.peer)
+            let audio = audioElement(call.peer)
             audio.srcObject = stream
             audio.play()
             document.getElementById("audio-area").appendChild(audio)
@@ -69,16 +69,16 @@ function connectedServer() {
 
 function updateOther(other) {
     players[other.id] = other
-    var otherElement = document.getElementById(other.id)
+    let otherElement = document.getElementById(other.id)
     if (otherElement == null) {
         initPlayerElement(document.getElementById('player-area'), other)
 
-        var peerId = other.id
-        var call = peer.call(peerId, localStream)
+        let peerId = other.id
+        let call = peer.call(peerId, localStream)
 
         call.on('stream', function(stream){
             console.log('id: ' + peerId + ' にcallして繋がったよ！')
-            var audio = audioElement(peerId)
+            let audio = audioElement(peerId)
             audio.srcObject = stream
             audio.play()
             document.getElementById("audio-area").appendChild(audio)
@@ -90,31 +90,31 @@ function updateOther(other) {
 }
 
 function updatePlayer(player) {
-    var playerElement = document.getElementById(player.id)
+    let playerElement = document.getElementById(player.id)
     playerElement.setAttribute('position', player.position)
 }
 
 function playerElement(player) {
-    var playerElement
+    let playerElement
 
     if (player.id == window.player.id) {
         playerElement = document.createElement('a-camera')
         playerElement.setAttribute('update-movement', '')
-        var box = document.createElement('a-box')
-        var face = document.createElement('a-plane')
+        let box = document.createElement('a-box')
+        let face = document.createElement('a-plane')
         face.setAttribute('src', '#smile')
         face.setAttribute('position', '0 0 -0.51')
         face.setAttribute('rotation', ' 0 180 0')
         box.appendChild(face)
-        var cursor = document.createElement('a-cursor')
+        let cursor = document.createElement('a-cursor')
 
         playerElement.appendChild(cursor)
         playerElement.appendChild(box)
     } else {
-        var playerElement = document.createElement('a-box')
+        playerElement = document.createElement('a-box')
         playerElement.setAttribute('material', 'envMap: #smile')
         playerElement.setAttribute('position', player.position)
-        var face = document.createElement('a-plane')
+        let face = document.createElement('a-plane')
         face.setAttribute('src', '#smile')
         face.setAttribute('position', '0 0 -0.51')
         face.setAttribute('rotation', ' 0 180 0')
@@ -127,21 +127,21 @@ function playerElement(player) {
 }
 
 function initPlayerElementsWithPlayers(players, targetElement) {
-    for (var playerID in players) {
-        var pe = playerElement(players[playerID])
+    for (let playerID in players) {
+        let pe = playerElement(players[playerID])
         targetElement.appendChild(pe)
     }
 }
 
 function initPlayerElement(targetElement, player) {
-    var pe = playerElement(player) 
+    let pe = playerElement(player) 
     targetElement.appendChild(pe)
 }
 
 AFRAME.registerComponent('update-movement', {
     tick: function () {
-        var elPosition = this.el.getAttribute('position')
-        var elRotation = this.el.getAttribute('rotation')
+        let elPosition = this.el.getAttribute('position')
+        let elRotation = this.el.getAttribute('rotation')
         if (elPosition.x != window.player.position.x || elPosition.z != window.player.position.z || elRotation.x != window.player.rotation.x || elRotation.y != window.player.rotation.y || elRotation.z != window.player.rotation.z) {
             window.player.position = elPosition
             window.player.rotation = elRotation
