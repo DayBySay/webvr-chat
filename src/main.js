@@ -79,47 +79,15 @@ function updateOther(other) {
     }
 }
 
-function playerElement(player) {
-    let playerElement
-
-    if (player.id == window.player.id) {
-        playerElement = document.createElement('a-camera')
-        playerElement.setAttribute('update-movement', '')
-        let box = document.createElement('a-box')
-        let face = document.createElement('a-plane')
-        face.setAttribute('src', '#smile')
-        face.setAttribute('position', '0 0 -0.51')
-        face.setAttribute('rotation', ' 0 180 0')
-        box.appendChild(face)
-        let cursor = document.createElement('a-cursor')
-
-        playerElement.appendChild(cursor)
-        playerElement.appendChild(box)
-    } else {
-        playerElement = document.createElement('a-box')
-        playerElement.setAttribute('material', 'envMap: #smile')
-        playerElement.setAttribute('position', player.position)
-        let face = document.createElement('a-plane')
-        face.setAttribute('src', '#smile')
-        face.setAttribute('position', '0 0 -0.51')
-        face.setAttribute('rotation', ' 0 180 0')
-        playerElement.appendChild(face)
-    }
-
-    playerElement.setAttribute('id', player.id)
-
-    return playerElement
-}
-
 function initPlayerElementsWithPlayers(players, targetElement) {
     for (let playerID in players) {
-        let pe = playerElement(players[playerID])
+        let pe = Util.playerElementWithInitializedPlayer(window.player, players[playerID])
         targetElement.appendChild(pe)
     }
 }
 
 function initPlayerElement(targetElement, player) {
-    let pe = playerElement(player) 
+    let pe = playerElementWithInitializedPlayer(window.players, player) 
     targetElement.appendChild(pe)
 }
 
