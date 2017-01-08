@@ -31,7 +31,7 @@ socket.on('logout_other', function (other){
 });
 
 function audioElement(peerID) {
-    let ae = document.getElementById(peerID)
+    let ae = document.getElementById('audio' + peerID)
     if (ae == null) {
         ae = document.createElement('audio')
         ae.setAttribute('id', 'audio' + peerID)
@@ -55,11 +55,10 @@ function connectedServer() {
 
         call.on('stream', function(stream){
             console.log('id: ' + call.peer + ' にcallされて繋がったよ！');
-            var url = URL.createObjectURL(stream);
-            var audio = audioElement(call.peer));
-            audio.srcObject = url;
-            document.getElementById("audio-area").appendChild(audio);
+            var audio = audioElement(call.peer);
+            audio.srcObject = stream;
             audio.play();
+            document.getElementById("audio-area").appendChild(audio);
         });
     });
 
@@ -79,11 +78,10 @@ function updateOther(other) {
 
         call.on('stream', function(stream){
             console.log('id: ' + peerId + ' にcallして繋がったよ！');
-            var url = URL.createObjectURL(stream);
             var audio = audioElement(peerId);
-            audio.srcObject = url;
-            document.getElementById("audio-area").appendChild(audio);
+            audio.srcObject = stream;
             audio.play();
+            document.getElementById("audio-area").appendChild(audio);
         });
     } else {
         otherElement.setAttribute('position', other.position);
