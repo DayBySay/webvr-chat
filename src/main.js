@@ -30,6 +30,17 @@ socket.on('logout_other', function (other){
     oe.parentNode.removeChild(oe)
 })
 
+function audioElement(peerID) {
+    let ae = document.getElementById(peerID)
+    if (ae == null) {
+        ae = document.createElement('audio')
+        ae.setAttribute('id', 'audio' + peerID)
+    }
+    console.log(ae)
+
+    return ae
+}
+
 function connectedServer() {
     peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 1})
 
@@ -45,9 +56,10 @@ function connectedServer() {
         call.on('stream', function(stream){
             console.log('id: ' + call.peer + ' にcallされて繋がったよ！')
             let url = URL.createObjectURL(stream)
-            let audio = document.getElementById('audio')
+            let audio = audioElement(call.peer)
             audio.srcObject = url
             audio.play()
+            document.getElementById('audio-area').appendChild(audio)
         })
     })
 
@@ -62,14 +74,16 @@ function updateOther(other) {
     if (otherElement == null) {
         initPlayerElement(document.getElementById('player-area'), other)
 
-        let peerId = other.id
-        let call = peer.call(peerId, localStream)
+        let peerID = other.id
+        let call = peer.call(peerID, localStream)
 
         call.on('stream', function(stream){
-            console.log('id: ' + peerId + ' にcallして繋がったよ！')
+            console.log('id: ' + peerID + ' にcallして繋がったよ！')
             let url = URL.createObjectURL(stream)
-            let audio = document.getElementById('audio')
+            let audio = audioElement(peerID)
             audio.srcObject = url
+            audio.play()
+            document.getElementById('audio-area').appendChild(audio)
         })
     } else {
         otherElement.setAttribute('position', other.position)
