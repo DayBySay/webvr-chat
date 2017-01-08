@@ -13,7 +13,7 @@ deploy:
 build:
 	npm run build
 
-build-auto:
+watcher:
 	gulp watch
 
 lint:

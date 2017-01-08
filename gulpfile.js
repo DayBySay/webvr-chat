@@ -4,6 +4,8 @@ var babelify = require("babelify");
 var uglify = require("gulp-uglify");
 var source = require("vinyl-source-stream");
 var buffer = require("vinyl-buffer");
+var eslint = require("gulp-eslint");
+var plumber = require("gulp-plumber");
 
 gulp.task("js-dev", function () {
     return browserify({
@@ -37,6 +39,22 @@ gulp.task("js", function () {
         .pipe(gulp.dest("public_html/js"));
 });
 
+gulp.task("lint", function () {
+    return gulp.src(["src/*.js"])
+        .pipe(plumber({
+            errorHandler: function (error) {
+                var taskname = "eslint";
+                var title = "[task]" + taskname + " " + error.plugin;
+                var errorMessage = "error: " + error.message;
+                console.error(title + "\n" + errorMessage);
+            }
+        }))
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failOnError())
+        .pipe(plumber.stop());
+});
+
 gulp.task("watch", function () {
-    gulp.watch(["./src/*.js"], ["js-dev"])
+    gulp.watch(["./src/*.js"], ["lint","js-dev"]);
 });

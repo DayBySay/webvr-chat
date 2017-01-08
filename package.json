@@ -28,6 +28,8 @@
     "eslint": "^3.13.0",
     "express": "^4.14.0",
     "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-plumber": "^1.1.0",
     "gulp-uglify": "^2.0.0",
     "socket.io": "^1.7.2",
     "socket.io-client": "^1.7.2",
