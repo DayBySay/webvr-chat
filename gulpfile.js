@@ -5,7 +5,6 @@ var uglify = require("gulp-uglify");
 var source = require("vinyl-source-stream");
 var buffer = require("vinyl-buffer");
 var eslint = require("gulp-eslint");
-var plumber = require("gulp-plumber");
 
 gulp.task("js-dev", function () {
     return browserify({
@@ -41,18 +40,9 @@ gulp.task("js", function () {
 
 gulp.task("lint", function () {
     return gulp.src(["src/*.js"])
-        .pipe(plumber({
-            errorHandler: function (error) {
-                var taskname = "eslint";
-                var title = "[task]" + taskname + " " + error.plugin;
-                var errorMessage = "error: " + error.message;
-                console.error(title + "\n" + errorMessage);
-            }
-        }))
         .pipe(eslint())
         .pipe(eslint.format())
-        .pipe(eslint.failOnError())
-        .pipe(plumber.stop());
+        .pipe(eslint.failAfterError())
 });
 
 gulp.task("watch", function () {
