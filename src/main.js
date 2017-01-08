@@ -8,24 +8,24 @@ var localStream;
 var connectedCall;
 
 var players = new Object;
-var socket = require("socket.io-client")();
+var socket = require('socket.io-client')();
 var player;
 var peer;
 
-socket.on("connect", function(){
+socket.on('connect', function(){
     connectedServer();
 });
 
-socket.on("update", function(other){
+socket.on('update', function(other){
     updateOther(other);
 });
 
-socket.on("init_players", function (players){
+socket.on('init_players', function (players){
     players = players;
-    initPlayerElementsWithPlayers(players, document.getElementById("player-area"));
+    initPlayerElementsWithPlayers(players, document.getElementById('player-area'));
 });
 
-socket.on("logout_other", function (other){
+socket.on('logout_other', function (other){
     var oe = document.getElementById(other.id);
     oe.parentNode.removeChild(oe);
 });
@@ -46,7 +46,7 @@ function connectedServer() {
 
     peer.on('open', function(){
         window.player = new Player(peer.id);
-        socket.emit("login", window.player);
+        socket.emit('login', window.player);
     });
 
     peer.on('call', function(call){
@@ -54,9 +54,9 @@ function connectedServer() {
         call.answer(localStream);
 
         call.on('stream', function(stream){
-            console.log("id: " + call.peer + " にcallされて繋がったよ！");
+            console.log('id: ' + call.peer + ' にcallされて繋がったよ！');
             var url = URL.createObjectURL(stream);
-            var audio = document.getElementById("audio");
+            var audio = document.getElementById('audio');
             audio.srcObject = stream;
             audio.play();
         });
@@ -64,63 +64,63 @@ function connectedServer() {
 
     navigator.getUserMedia({audio: true, video: false}, function(stream){
         localStream = stream;
-    }, function() { alert("Error!"); });
+    }, function() { alert('Error!'); });
 }
 
 function updateOther(other) {
     players[other.id] = other;
     var otherElement = document.getElementById(other.id);
     if (otherElement == null) {
-        initPlayerElement(document.getElementById("player-area"), other);
+        initPlayerElement(document.getElementById('player-area'), other);
 
         var peerId = other.id;
         var call = peer.call(peerId, localStream);
 
         call.on('stream', function(stream){
-            console.log("id: " + peerId + " にcallして繋がったよ！");
+            console.log('id: ' + peerId + ' にcallして繋がったよ！');
             var url = URL.createObjectURL(stream);
-            var audio = document.getElementById("audio");
+            var audio = document.getElementById('audio');
             audio.srcObject = stream;
         });
     } else {
-        otherElement.setAttribute("position", other.position);
-        otherElement.setAttribute("rotation", other.rotation);
+        otherElement.setAttribute('position', other.position);
+        otherElement.setAttribute('rotation', other.rotation);
     }
 }
 
 function updatePlayer(player) {
     var playerElement = document.getElementById(player.id);
-    playerElement.setAttribute("position", player.position);
+    playerElement.setAttribute('position', player.position);
 }
 
 function playerElement(player) {
     var playerElement;
 
     if (player.id == window.player.id) {
-        playerElement = document.createElement("a-camera");
-        playerElement.setAttribute("update-movement", "");
-        var box = document.createElement("a-box");
-        var face = document.createElement("a-plane");
-        face.setAttribute("src", "#smile");
-        face.setAttribute("position", "0 0 -0.51");
-        face.setAttribute("rotation", " 0 180 0");
+        playerElement = document.createElement('a-camera');
+        playerElement.setAttribute('update-movement', '');
+        var box = document.createElement('a-box');
+        var face = document.createElement('a-plane');
+        face.setAttribute('src', '#smile');
+        face.setAttribute('position', '0 0 -0.51');
+        face.setAttribute('rotation', ' 0 180 0');
         box.appendChild(face);
-        var cursor = document.createElement("a-cursor");
+        var cursor = document.createElement('a-cursor');
 
         playerElement.appendChild(cursor);
         playerElement.appendChild(box);
     } else {
-        var playerElement = document.createElement("a-box");
-        playerElement.setAttribute("material", "envMap: #smile;");
-        playerElement.setAttribute("position", player.position);
-        var face = document.createElement("a-plane");
-        face.setAttribute("src", "#smile");
-        face.setAttribute("position", "0 0 -0.51");
-        face.setAttribute("rotation", " 0 180 0");
+        var playerElement = document.createElement('a-box');
+        playerElement.setAttribute('material', 'envMap: #smile;');
+        playerElement.setAttribute('position', player.position);
+        var face = document.createElement('a-plane');
+        face.setAttribute('src', '#smile');
+        face.setAttribute('position', '0 0 -0.51');
+        face.setAttribute('rotation', ' 0 180 0');
         playerElement.appendChild(face);
     }
 
-    playerElement.setAttribute("id", player.id);
+    playerElement.setAttribute('id', player.id);
 
     return playerElement;
 }
@@ -137,14 +137,14 @@ function initPlayerElement(targetElement, player) {
     targetElement.appendChild(pe);
 }
 
-AFRAME.registerComponent("update-movement", {
+AFRAME.registerComponent('update-movement', {
     tick: function () {
-        var elPosition = this.el.getAttribute("position");
-        var elRotation = this.el.getAttribute("rotation");
+        var elPosition = this.el.getAttribute('position');
+        var elRotation = this.el.getAttribute('rotation');
         if (elPosition.x != window.player.position.x || elPosition.z != window.player.position.z || elRotation.x != window.player.rotation.x || elRotation.y != window.player.rotation.y || elRotation.z != window.player.rotation.z) {
             window.player.position = elPosition;
             window.player.rotation = elRotation;
-            socket.emit("update", window.player);
+            socket.emit('update', window.player);
         }
     }
 });
