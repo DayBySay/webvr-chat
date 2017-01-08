@@ -24,7 +24,7 @@ socket.on('update', function(other){
 
 socket.on('init_players', function (players){
     window.players = players
-    Util.initPlayerElementsWithPlayers(players, document.getElementById('player-area'))
+    Util.initPlayerElementsWithPlayers(window.player, players, document.getElementById('player-area'))
 })
 
 socket.on('logout_other', function (other){

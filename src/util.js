@@ -1,7 +1,8 @@
-export default class Util {
-    const audioAreaSuffix = 'audio'
+const audioAreaSuffix = 'audio'
 
-    static function audioElementWithPeerID(peerID) {
+export default class Util {
+
+    static audioElementWithPeerID(peerID) {
         let ae = document.getElementById(audioAreaSuffix + peerID)
         if (ae == null) {
             ae = document.createElement('audio')
@@ -11,42 +12,44 @@ export default class Util {
         return ae
     }
 
-    static function playerElementWithInitializedPlayer(player, initilizedPlayer) {
+    static playerElementWithInitializedPlayer(player, initilizedPlayer) {
         let playerElement
 
         if (initilizedPlayer.id == player.id) {
-            playerElement = me()
+            playerElement = this.me(initilizedPlayer)
         } else {
-            playerElement = other()
+            playerElement = this.other(initilizedPlayer)
         }
 
         return playerElement
     }
 
-    function me() {
+    static me(player) {
         let playerElement
         playerElement = document.createElement('a-camera')
         playerElement.setAttribute('update-movement', '')
         let box = document.createElement('a-box')
-        box.appendChild(face())
+        box.appendChild(this.face())
         let cursor = document.createElement('a-cursor')
 
         playerElement.appendChild(cursor)
         playerElement.appendChild(box)
         playerElement.setAttribute('id', player.id)
+        return playerElement
     }
 
-    function other() {
+    static other(player) {
         let playerElement
         playerElement = document.createElement('a-box')
         playerElement.setAttribute('material', 'envMap: #smile')
-        playerElement.setAttribute('position', initilizedPlayer.position)
-        playerElement.setAttribute('rotation', initilizedPlayer.rotation)
-        playerElement.appendChild(face())
-        playerElement.setAttribute('id', initilizedPlayer.id)
+        playerElement.setAttribute('position', player.position)
+        playerElement.setAttribute('rotation', player.rotation)
+        playerElement.appendChild(this.face())
+        playerElement.setAttribute('id', player.id)
+        return playerElement
     }
 
-    function face() {
+    static face() {
         let face = document.createElement('a-plane')
         face.setAttribute('src', '#smile')
         face.setAttribute('position', '0 0 -0.51')
@@ -54,15 +57,17 @@ export default class Util {
         return face
     }
 
-    static function initPlayerElementsWithPlayers(players, targetElement) {
+    static initPlayerElementsWithPlayers(player, players, targetElement) {
         for (let playerID in players) {
-            let pe = Util.playerElementWithInitializedPlayer(window.player, players[playerID])
+            let pe = this.playerElementWithInitializedPlayer(player, players[playerID])
+            console.log(pe)
             targetElement.appendChild(pe)
         }
     }
 
-    static function initPlayerElement(targetElement, player) {
-        let pe = playerElementWithInitializedPlayer(window.players, player) 
+    static initPlayerElement(targetElement, player) {
+        let pe = this.playerElementWithInitializedPlayer(players, player) 
+        console.log(pe)
         targetElement.appendChild(pe)
     }
 }
