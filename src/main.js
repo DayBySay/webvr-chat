@@ -21,7 +21,7 @@ socket.on('update', function(other){
 })
 
 socket.on('init_players', function (players){
-    players = players
+    window.players = players
     initPlayerElementsWithPlayers(players, document.getElementById('player-area'))
 })
 
@@ -42,14 +42,14 @@ function audioElement(peerID) {
 }
 
 function connectedServer() {
-    peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 1})
+    window.peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 1})
 
-    peer.on('open', function(){
-        window.player = new Player(peer.id)
+    window.peer.on('open', function(){
+        window.player = new Player(window.peer.id)
         socket.emit('login', window.player)
     })
 
-    peer.on('call', function(call){
+    window.peer.on('call', function(call){
         connectedCall = call
         call.answer(localStream)
 
@@ -74,7 +74,7 @@ function updateOther(other) {
         initPlayerElement(document.getElementById('player-area'), other)
 
         let peerId = other.id
-        let call = peer.call(peerId, localStream)
+        let call = window.peer.call(peerId, localStream)
 
         call.on('stream', function(stream){
             console.log('id: ' + peerId + ' にcallして繋がったよ！')
