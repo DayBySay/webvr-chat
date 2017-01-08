@@ -1,6 +1,7 @@
 import aframe from 'aframe'
 import Player from './player'
 import socketio from 'socket.io-client'
+import Util from './util'
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
 
@@ -30,17 +31,6 @@ socket.on('logout_other', function (other){
     oe.parentNode.removeChild(oe)
 })
 
-function audioElement(peerID) {
-    let ae = document.getElementById('audio' + peerID)
-    if (ae == null) {
-        ae = document.createElement('audio')
-        ae.setAttribute('id', 'audio' + peerID)
-    }
-    console.log(ae)
-
-    return ae
-}
-
 function connectedServer() {
     window.peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 1})
 
@@ -55,7 +45,7 @@ function connectedServer() {
 
         call.on('stream', function(stream){
             console.log('id: ' + call.peer + ' にcallされて繋がったよ！')
-            let audio = audioElement(call.peer)
+            let audio = Util.audioElementWithPeerID(call.peer)
             audio.srcObject = stream
             audio.play()
             document.getElementById('audio-area').appendChild(audio)
@@ -78,7 +68,7 @@ function updateOther(other) {
 
         call.on('stream', function(stream){
             console.log('id: ' + peerId + ' にcallして繋がったよ！')
-            let audio = audioElement(peerId)
+            let audio = Util.audioElementWithPeerID(peerId)
             audio.srcObject = stream
             audio.play()
             document.getElementById('audio-area').appendChild(audio)
