@@ -6,7 +6,7 @@
   "scripts": {
     "build": "gulp js",
     "postinstall": "gulp js",
-    "lint": "eslint lint src/*.js"
+    "lint": "eslint src/*.js"
   },
   "repository": {
     "type": "git",

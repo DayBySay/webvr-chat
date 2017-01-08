@@ -15,3 +15,6 @@ build:
 
 build-auto:
 	gulp watch
+
+lint:
+	npm run lint
