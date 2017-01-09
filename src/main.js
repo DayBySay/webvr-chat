@@ -87,15 +87,15 @@ function updateOther(other) {
             window.dataConnections[peerId] = dataConnection
             console.log("open data connection!!")
             console.log(window.dataConnections)
-        })
 
-        dataConnection.on('data', function (data) {
-            console.log('data kitayo')
-            console.log(data)
+            dataConnection.on('data', function (data) {
+                console.log('data kitayo')
+                console.log(data)
+            })
         })
 
         dataConnection.on('error', function (error) {
-            console.log(error);
+            console.log(error)
         })
 
     } else {
@@ -114,8 +114,10 @@ AFRAME.registerComponent('update-movement', {
             // socket.emit('update', window.player)
             for (let peerID in window.dataConnections) {
                 let connection = window.dataConnections[peerID]
+                console.log("data okuruyo-!!")
+                console.log(connection.peer)
                 connection.send(window.player.flatObject)
-                console.log(window.player.flatObject);
+                console.log(window.player.flatObject)
                 console.log("data soushin!!")
             }
         }
