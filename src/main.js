@@ -2,6 +2,8 @@ import aframe from 'aframe'
 import Player from './player'
 import socketio from 'socket.io-client'
 import Util from './util'
+import registerVideoBillboard from 'aframe-video-billboard';
+registerVideoBillboard(aframe);
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
 
@@ -58,7 +60,7 @@ function connectedServer() {
         console.log(conn)
     })
 
-    navigator.getUserMedia({audio: true, video: false}, function(stream){
+    navigator.getUserMedia({audio: true, video: true}, function(stream){
         localStream = stream
     }, function() { alert('Error!') })
 }
@@ -116,3 +118,36 @@ AFRAME.registerComponent('update-movement', {
         }
     }
 })
+
+var extId = "jhamddnphmkpiloggdjpkomabdephdkp"
+function shareScreen() {
+    console.log("aaa")
+    chrome.runtime.sendMessage(extId, { getStream: true},
+        function(response) {
+            console.log("Response from extension: " + response);
+            console.dir(response);
+            console.log(response.mediaid);
+            navigator.webkitGetUserMedia({
+                audio:false,
+                video: { mandatory: { chromeMediaSource: "desktop",
+                    chromeMediaSourceId: response.mediaid } }
+            }, gotStream, getUserMediaError);
+        });
+}
+
+function gotStream(stream) {
+    console.log("Received local stream");
+    var video = document.querySelector("video");
+    console.log(video)
+    video.src = URL.createObjectURL(stream);
+    localStream = stream;
+    stream.onended = function() { console.log("Ended"); };
+}
+
+function getUserMediaError(err) {
+    console.log("getUserMedia() failed.");
+    console.dir(err);
+}
+
+shareScreen()
+
