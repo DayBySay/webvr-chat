@@ -137,7 +137,7 @@ function shareScreen() {
 
 function gotStream(stream) {
     console.log("Received local stream");
-    var video = document.querySelector("video");
+    var video = document.getElementById("sharedscreen");
     console.log(video)
     video.src = URL.createObjectURL(stream);
     localStream = stream;
