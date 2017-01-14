@@ -123,16 +123,15 @@ var extId = "lbeimjnckcclieioanodfcjjkjgkpffd"
 function shareScreen() {
     chrome.runtime.sendMessage(extId, { getStream: true},
         function(response) {
-            console.dir(response);
             navigator.webkitGetUserMedia({
                 audio:false,
                 video: { mandatory: { chromeMediaSource: "desktop",
                     chromeMediaSourceId: response.mediaid } }
-            }, gotStream, getUserMediaError);
+            }, gotSharedScreenStream, getUserMediaError);
         });
 }
 
-function gotStream(stream) {
+function gotSharedScreenStream(stream) {
     var video = document.getElementById("sharedscreen");
     video.src = URL.createObjectURL(stream);
     localStream = stream;
