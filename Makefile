@@ -14,7 +14,7 @@ build:
 	npm run build
 
 watcher:
-	gulp watch
+	node_modules/.bin/gulp watch
 
 lint:
 	node_modules/.bin/eslint ./src/*.js
