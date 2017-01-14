@@ -119,14 +119,11 @@ AFRAME.registerComponent('update-movement', {
     }
 })
 
-var extId = "jhamddnphmkpiloggdjpkomabdephdkp"
+var extId = "lbeimjnckcclieioanodfcjjkjgkpffd"
 function shareScreen() {
-    console.log("aaa")
     chrome.runtime.sendMessage(extId, { getStream: true},
         function(response) {
-            console.log("Response from extension: " + response);
             console.dir(response);
-            console.log(response.mediaid);
             navigator.webkitGetUserMedia({
                 audio:false,
                 video: { mandatory: { chromeMediaSource: "desktop",
@@ -136,9 +133,7 @@ function shareScreen() {
 }
 
 function gotStream(stream) {
-    console.log("Received local stream");
     var video = document.getElementById("sharedscreen");
-    console.log(video)
     video.src = URL.createObjectURL(stream);
     localStream = stream;
     stream.onended = function() { console.log("Ended"); };
