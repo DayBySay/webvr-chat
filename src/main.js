@@ -9,7 +9,7 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 let localStream
 let connectedCall
 
-let players = new Object
+let userService
 let dataConnections = new Object
 let socket = require('socket.io-client')()
 let player
@@ -19,9 +19,9 @@ socket.on('connect', function(){
     connectedServer()
 })
 
-socket.on('init_players', function (players){
-    window.players = players
-	Util.initPlayerArea(window.player, players)
+socket.on('init_players', function (users){
+    window.UserService.users = users
+	Util.initPlayerArea(window.player, window.UserService.users)
 })
 
 socket.on('init_other', function(other) {
@@ -42,6 +42,7 @@ function connectedServer() {
 
     window.peer.on('open', function(){
         window.player = new Player(window.peer.id)
+		window.UserService = new UserService(window.player.id)
         socket.emit('login', window.player)
     })
 
