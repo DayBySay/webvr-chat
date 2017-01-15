@@ -58,9 +58,9 @@ export default class Util {
         for (let playerID in players) {
             let pe
 			if (playerID == player.id) {
-				pe = this.me(initilizedPlayer)
+				pe = this.me(player)
 			} else {
-				pe = this.other(initilizedPlayer)
+				pe = this.other(player)
 			}
 
             targetElement.appendChild(pe)
