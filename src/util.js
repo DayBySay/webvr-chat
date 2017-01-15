@@ -17,18 +17,6 @@ export default class Util {
         return ae
     }
 
-    static playerElementWithInitializedPlayer(player, initilizedPlayer) {
-        let playerElement
-
-        if (initilizedPlayer.id == player.id) {
-            playerElement = this.me(initilizedPlayer)
-        } else {
-            playerElement = this.other(initilizedPlayer)
-        }
-
-        return playerElement
-    }
-
     static me(player) {
         let playerElement
         playerElement = document.createElement('a-camera')
@@ -68,18 +56,21 @@ export default class Util {
 
     static initPlayerElementsWithPlayers(player, players, targetElement) {
         for (let playerID in players) {
-            let pe = this.playerElementWithInitializedPlayer(player, players[playerID])
+            let pe
+			if (playerID == player.id) {
+				pe = this.me(initilizedPlayer)
+			} else {
+				pe = this.other(initilizedPlayer)
+			}
+
             targetElement.appendChild(pe)
         }
     }
 
-    static initPlayerElement(player, targetElement) {
-        let pe = this.playerElementWithInitializedPlayer(players, player) 
-        targetElement.appendChild(pe)
-    }
-
 	static initOther(other) {
-		this.initPlayerElement(other, this.playerArea())
+		let pe
+		pe = this.other(other)
+		targetElement.appendChild(pe)
 	}
 
 	static updateOther(other) {
