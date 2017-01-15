@@ -20,7 +20,7 @@ socket.on('connect', function(){
 
 socket.on('init_players', function (players){
     window.players = players
-    Util.initPlayerElementsWithPlayers(window.player, players)
+	Util.initPlayerArea(window.player, players)
 })
 
 socket.on('init_other', function(other) {

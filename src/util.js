@@ -1,13 +1,17 @@
 const audioAreaSuffix = 'audio'
-const playerArea = document.getElementById('player-area')
 
 export default class Util {
 
+	static playerArea() {
+		let playerArea = document.getElementById('player-area')
+		return playerArea
+	}
+
     static audioElementWithPeerID(peerID) {
-        let ae = document.getElementById(audioAreaSuffix + peerID)
+        let ae = document.getElementById(this.audioAreaSuffix + peerID)
         if (ae == null) {
             ae = document.createElement('audio')
-            ae.setAttribute('id', audioAreaSuffix + peerID)
+            ae.setAttribute('id', this.audioAreaSuffix + peerID)
         }
 
         return ae
@@ -59,13 +63,12 @@ export default class Util {
     }
 
     static initPlayerArea(player, players) {
-		this.initPlayerElementsWithPlayers(player, players, playerArea)
+		this.initPlayerElementsWithPlayers(player, players, this.playerArea())
     }
 
     static initPlayerElementsWithPlayers(player, players, targetElement) {
         for (let playerID in players) {
             let pe = this.playerElementWithInitializedPlayer(player, players[playerID])
-            console.log(pe)
             targetElement.appendChild(pe)
         }
     }
@@ -76,7 +79,7 @@ export default class Util {
     }
 
 	static initOther(other) {
-		this.initPlayerElement(other, playerArea)
+		this.initPlayerElement(other, this.playerArea())
 	}
 
 	static updateOther(other) {
