@@ -1,4 +1,5 @@
 const audioAreaSuffix = 'audio'
+const playerArea = document.getElementById('player-area')
 
 export default class Util {
 
@@ -57,6 +58,10 @@ export default class Util {
         return face
     }
 
+    static initPlayerArea(player, players) {
+		this.initPlayerElementsWithPlayers(player, players, playerArea)
+    }
+
     static initPlayerElementsWithPlayers(player, players, targetElement) {
         for (let playerID in players) {
             let pe = this.playerElementWithInitializedPlayer(player, players[playerID])
@@ -70,4 +75,11 @@ export default class Util {
         console.log(pe)
         targetElement.appendChild(pe)
     }
+
+	static updateOther(other) {
+		players[other.id] = other
+		let otherElement = document.getElementById(other.id)
+		otherElement.setAttribute('position', other.position)
+		otherElement.setAttribute('rotation', other.rotation)
+	}
 }

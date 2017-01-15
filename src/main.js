@@ -18,17 +18,17 @@ socket.on('connect', function(){
     connectedServer()
 })
 
-socket.on('update', function(other){
-    updateOther(other)
+socket.on('init_players', function (players){
+    window.players = players
+    Util.initPlayerElementsWithPlayers(window.player, players)
 })
 
 socket.on('init_other', function(other) {
 	initOther(other)
 })
 
-socket.on('init_players', function (players){
-    window.players = players
-    Util.initPlayerElementsWithPlayers(window.player, players, document.getElementById('player-area'))
+socket.on('update_other', function(other){
+    Uti.lupdateOther(other)
 })
 
 socket.on('logout_other', function (other){
@@ -97,13 +97,6 @@ function initOther(other) {
 		audio.play()
 		document.getElementById('audio-area').appendChild(audio)
 	})
-}
-
-function updateOther(other) {
-    players[other.id] = other
-    let otherElement = document.getElementById(other.id)
-	otherElement.setAttribute('position', other.position)
-	otherElement.setAttribute('rotation', other.rotation)
 }
 
 AFRAME.registerComponent('update-movement', {
