@@ -12,10 +12,10 @@ export default class UserService {
 	}
 
 	isPlayer(user) {
-		return user.playerId === user.id
+		return this.player.id === user.id
 	}
 
-	sohuldUpdatePlayerData(position, rotation) {
+	shouldUpdatePlayerData(position, rotation) {
         if (position.x != this.player.position.x || position.z != this.player.position.z || rotation.x != this.player.rotation.x || rotation.y != this.player.rotation.y || rotation.z != this.player.rotation.z) {
             this.player.position = position
             this.player.rotation = rotation
@@ -46,7 +46,7 @@ export default class UserService {
 
 	initOther(user) {
 		let oe
-		oe = user.otherElement()
+		oe = User.otherElement(user)
 		this.userArea().appendChild(oe)
 	}
 
