@@ -22,6 +22,10 @@ socket.on('update', function(other){
     updateOther(other)
 })
 
+socket.on('init_other', function(other) {
+	initOther(other)
+})
+
 socket.on('init_players', function (players){
     window.players = players
     Util.initPlayerElementsWithPlayers(window.player, players, document.getElementById('player-area'))
@@ -63,46 +67,43 @@ function connectedServer() {
     }, function() { alert('Error!') })
 }
 
+function initOther(other) {
+	Util.initPlayerElement(document.getElementById('player-area'), other)
+
+	let dataConnection = window.peer.connect(peerId)
+
+	dataConnection.on('open', function () {
+		window.dataConnections[peerId] = dataConnection
+		console.log("open data connection!!")
+		console.log(window.dataConnections)
+	})
+
+	dataConnection.on('data', function (data) {
+		console.log('data kitayo')
+		console.log(data)
+	})
+
+	dataConnection.on('error', function (error) {
+		console.log(error);
+	})
+
+	let peerId = other.id
+	let call = window.peer.call(peerId, localStream)
+
+	call.on('stream', function(stream){
+		console.log('id: ' + peerId + ' にcallして繋がったよ！')
+		let audio = Util.audioElementWithPeerID(peerId)
+		audio.srcObject = stream
+		audio.play()
+		document.getElementById('audio-area').appendChild(audio)
+	})
+}
+
 function updateOther(other) {
     players[other.id] = other
     let otherElement = document.getElementById(other.id)
-    if (otherElement == null) {
-        Util.initPlayerElement(document.getElementById('player-area'), other)
-
-        console.log('data tsunagi masu')
-        console.log(peerId)
-        let dataConnection = window.peer.connect(peerId)
-
-        dataConnection.on('open', function () {
-            window.dataConnections[peerId] = dataConnection
-            console.log("open data connection!!")
-            console.log(window.dataConnections)
-        })
-
-        dataConnection.on('data', function (data) {
-            console.log('data kitayo')
-            console.log(data)
-        })
-
-        dataConnection.on('error', function (error) {
-            console.log(error);
-        })
-
-
-        let peerId = other.id
-        let call = window.peer.call(peerId, localStream)
-
-        call.on('stream', function(stream){
-            console.log('id: ' + peerId + ' にcallして繋がったよ！')
-            let audio = Util.audioElementWithPeerID(peerId)
-            audio.srcObject = stream
-            audio.play()
-            document.getElementById('audio-area').appendChild(audio)
-        })
-    } else {
-        otherElement.setAttribute('position', other.position)
-        otherElement.setAttribute('rotation', other.rotation)
-    }
+	otherElement.setAttribute('position', other.position)
+	otherElement.setAttribute('rotation', other.rotation)
 }
 
 AFRAME.registerComponent('update-movement', {
