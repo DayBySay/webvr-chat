@@ -23,15 +23,15 @@ io.sockets.on('connection', function(socket) {
     socket.on("update", function(player){
         players[socket.id] = player;
         console.log(player);
-        socket.broadcast.emit("update", player);
-        console.log("update");
+        socket.broadcast.emit("update_other", player);
+        console.log("update_other");
         console.log(players);
     })
 
     socket.on("disconnect", function () {
         socket.broadcast.emit("logout_other", players[socket.id]);
         delete players[socket.id]
-        console.log("logout");
+        console.log("logout_other");
         console.log(players);
     })
 });

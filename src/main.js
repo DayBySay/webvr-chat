@@ -26,7 +26,7 @@ socket.on('init_other', function(other) {
 })
 
 socket.on('update_other', function(other){
-    Uti.lupdateOther(other)
+    window.userService.updateOther(other)
 })
 
 socket.on('logout_other', function (other){
