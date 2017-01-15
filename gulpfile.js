@@ -9,6 +9,7 @@ var eslint = require("gulp-eslint");
 gulp.task("js-dev", function () {
     return browserify({
         entries: "./src/main.js",
+		debug: true, 
         extensions: [".js"]
     })
         .transform(babelify)
