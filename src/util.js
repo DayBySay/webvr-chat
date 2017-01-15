@@ -70,11 +70,14 @@ export default class Util {
         }
     }
 
-    static initPlayerElement(targetElement, player) {
+    static initPlayerElement(player, targetElement) {
         let pe = this.playerElementWithInitializedPlayer(players, player) 
-        console.log(pe)
         targetElement.appendChild(pe)
     }
+
+	static initOther(other) {
+		this.initPlayerElement(other, playerArea)
+	}
 
 	static updateOther(other) {
 		players[other.id] = other

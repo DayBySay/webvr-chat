@@ -68,7 +68,7 @@ function connectedServer() {
 }
 
 function initOther(other) {
-	Util.initPlayerElement(document.getElementById('player-area'), other)
+	Util.initOther(other)
 
 	let dataConnection = window.peer.connect(peerId)
 
