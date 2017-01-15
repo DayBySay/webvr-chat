@@ -6,11 +6,9 @@ import Util from './util'
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
 
 let localStream
-let connectedCall
-
 let userService
-let socket = require('socket.io-client')()
 let peer
+let socket = require('socket.io-client')()
 
 socket.on('connect', function(){
     connectedServer()
@@ -22,7 +20,8 @@ socket.on('init_users', function (users){
 })
 
 socket.on('init_other', function(other) {
-	initOther(other)
+	window.userService.initOther(other)
+	connectPeer(other.id)
 })
 
 socket.on('update_other', function(other){
@@ -30,11 +29,14 @@ socket.on('update_other', function(other){
 })
 
 socket.on('logout_other', function (other){
-    let oe = document.getElementById(other.id)
-    oe.parentNode.removeChild(oe)
+	window.userService.logoutOther(other)
 })
 
 function connectedServer() {
+	initPeer()
+}
+
+function initPeer() {
     window.peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 1})
 
     window.peer.on('open', function(){
@@ -43,7 +45,6 @@ function connectedServer() {
     })
 
     window.peer.on('call', function(call){
-        connectedCall = call
         call.answer(localStream)
 
         call.on('stream', function(stream){
@@ -60,10 +61,7 @@ function connectedServer() {
     }, function() { alert('Error!') })
 }
 
-function initOther(other) {
-	window.userService.initOther(other)
-
-	let peerId = other.id
+function connectPeer(peerId) {
 	let call = window.peer.call(peerId, localStream)
 
 	call.on('stream', function(stream){

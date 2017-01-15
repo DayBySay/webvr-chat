@@ -56,4 +56,9 @@ export default class UserService {
 		otherElement.setAttribute('position', other.position)
 		otherElement.setAttribute('rotation', other.rotation)
 	}
+
+	logoutOther(other) {
+		let oe = document.getElementById(other.id)
+		oe.parentNode.removeChild(oe)
+	}
 }
