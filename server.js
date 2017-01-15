@@ -22,7 +22,10 @@ io.sockets.on('connection', function(socket) {
 
     socket.on("update", function(player){
         players[socket.id] = player;
+        console.log(player);
         socket.broadcast.emit("update", player);
+        console.log("update");
+        console.log(players);
     })
 
     socket.on("disconnect", function () {
