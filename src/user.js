@@ -18,13 +18,14 @@ export default class User {
         userElement.appendChild(cursor)
         userElement.appendChild(box)
         userElement.setAttribute('id', user.id)
+        userElement.setAttribute('position', user.position)
+        userElement.setAttribute('rotation', user.rotation)
         return userElement
 	}
 
 	static otherElement(user) {
         let userElement
         userElement = document.createElement('a-box')
-        userElement.setAttribute('material', 'envMap: #smile')
         userElement.setAttribute('position', user.position)
         userElement.setAttribute('rotation', user.rotation)
         userElement.appendChild(this.face())
