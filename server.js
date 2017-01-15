@@ -12,14 +12,14 @@ var players = new Object;
 
 var seats = {
 	"male": [
-		{"id": 0, x: 0, z: 3, on: false},
-		{"id": 1, x: 3, z: 3, on: false},
-		{"id": 2, x: -3, z: 3, on: false}
+		{"id": 0, "position": {x: 0, z: 3}, "rotation": {y: 0}, on: false},
+		{"id": 1, "position": {x: 3, z: 3}, "rotation": {y: 0}, on: false},
+		{"id": 2, "position": {x: -3, z: 3}, "rotation": {y: 0}, on: false}
 	],
 	"female": [
-		{"id": 0, x: 0, z: -3, on: false},
-		{"id": 1, x: 3, z: -3, on: false},
-		{"id": 2, x: -3, z: -3, on: false}
+		{"id": 0, "position": {x: 0, z: -3}, "rotation": {y: 180}, on: false},
+		{"id": 1, "position": {x: 3, z: -3}, "rotation": {y: 180}, on: false},
+		{"id": 2, "position": {x: -3, z: -3}, "rotation": {y: 180}, on: false}
 	]
 }
 
@@ -64,8 +64,9 @@ io.sockets.on('connection', function(socket) {
 			return
 		}
 
-		player.position.x = seat.x;
-		player.position.z = seat.z;
+		player.position.x = seat.position.x;
+		player.position.z = seat.position.z;
+		player.rotation.y = seat.rotation.y;
 		player.seat = seat;
         players[socket.id] = player;
 
