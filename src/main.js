@@ -1,5 +1,4 @@
 import aframe from 'aframe'
-import User from './user'
 import UserService from './UserService'
 import socketio from 'socket.io-client'
 import Util from './util'
@@ -12,7 +11,6 @@ let connectedCall
 let userService
 let dataConnections = new Object
 let socket = require('socket.io-client')()
-let player
 let peer
 
 socket.on('connect', function(){
@@ -20,8 +18,8 @@ socket.on('connect', function(){
 })
 
 socket.on('init_users', function (users){
-    window.UserService.users = users
-	Util.initUserArea(window.player, window.UserService.users)
+    window.userService.users = users
+	window.userService.initUserArea()
 })
 
 socket.on('init_other', function(other) {
@@ -41,9 +39,8 @@ function connectedServer() {
     window.peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 1})
 
     window.peer.on('open', function(){
-        window.player = new User(window.peer.id)
-		window.UserService = new UserService(window.player.id)
-        socket.emit('login', window.player)
+		window.userService = new UserService(window.peer.id)
+        socket.emit('login', window.userService.player)
     })
 
     window.peer.on('call', function(call){
@@ -70,7 +67,7 @@ function connectedServer() {
 }
 
 function initOther(other) {
-	Util.initOther(other)
+	window.userService.initOther(other)
 
 	let dataConnection = window.peer.connect(peerId)
 
@@ -105,10 +102,8 @@ AFRAME.registerComponent('update-movement', {
     tick: function () {
         let elPosition = this.el.getAttribute('position')
         let elRotation = this.el.getAttribute('rotation')
-        if (elPosition.x != window.player.position.x || elPosition.z != window.player.position.z || elRotation.x != window.player.rotation.x || elRotation.y != window.player.rotation.y || elRotation.z != window.player.rotation.z) {
-            window.player.position = elPosition
-            window.player.rotation = elRotation
-            socket.emit('update', window.player)
-        }
+		if (window.userService.shouldUpdatePlayerData(elPosition, elRotation)) {
+            socket.emit('update', window.userService.player)
+		}
     }
 })

@@ -14,7 +14,7 @@ io.sockets.on('connection', function(socket) {
     socket.on("login", function (player) {
         players[socket.id] = player;
 
-        io.to(socket.id).emit("init_players", players);
+        io.to(socket.id).emit("init_users", players);
         socket.broadcast.emit("init_other", player);
         console.log("login");
         console.log(players);
