@@ -1,4 +1,4 @@
-export default class Player {
+export default class User {
     constructor(id) {
         this.id = id
         this.position = {'x': 0, 'y': 1.6, 'z': 0}

@@ -2,9 +2,9 @@ const audioAreaSuffix = 'audio'
 
 export default class Util {
 
-	static playerArea() {
-		let playerArea = document.getElementById('player-area')
-		return playerArea
+	static userArea() {
+		let userArea = document.getElementById('user-area')
+		return userArea
 	}
 
     static audioElementWithPeerID(peerID) {
@@ -17,29 +17,29 @@ export default class Util {
         return ae
     }
 
-    static me(player) {
-        let playerElement
-        playerElement = document.createElement('a-camera')
-        playerElement.setAttribute('update-movement', '')
+    static me(user) {
+        let userElement
+        userElement = document.createElement('a-camera')
+        userElement.setAttribute('update-movement', '')
         let box = document.createElement('a-box')
         box.appendChild(this.face())
         let cursor = document.createElement('a-cursor')
 
-        playerElement.appendChild(cursor)
-        playerElement.appendChild(box)
-        playerElement.setAttribute('id', player.id)
-        return playerElement
+        userElement.appendChild(cursor)
+        userElement.appendChild(box)
+        userElement.setAttribute('id', user.id)
+        return userElement
     }
 
-    static other(player) {
-        let playerElement
-        playerElement = document.createElement('a-box')
-        playerElement.setAttribute('material', 'envMap: #smile')
-        playerElement.setAttribute('position', player.position)
-        playerElement.setAttribute('rotation', player.rotation)
-        playerElement.appendChild(this.face())
-        playerElement.setAttribute('id', player.id)
-        return playerElement
+    static other(user) {
+        let userElement
+        userElement = document.createElement('a-box')
+        userElement.setAttribute('material', 'envMap: #smile')
+        userElement.setAttribute('position', user.position)
+        userElement.setAttribute('rotation', user.rotation)
+        userElement.appendChild(this.face())
+        userElement.setAttribute('id', user.id)
+        return userElement
     }
 
     static face() {
@@ -50,20 +50,20 @@ export default class Util {
         return face
     }
 
-    static initPlayerArea(player, players) {
-		this.initPlayerElementsWithPlayers(player, players, this.playerArea())
+    static initUserArea(player, users) {
+		this.inituserElementsWithusers(player, users, this.userArea())
     }
 
-    static initPlayerElementsWithPlayers(player, players, targetElement) {
-        for (let playerID in players) {
-            let pe
-			if (playerID == player.id) {
-				pe = this.me(player)
+    static initUserElementsWithUsers(player, users, targetElement) {
+        for (let user in users) {
+            let ue
+			if (user.id == player.id) {
+				ue = this.me(player)
 			} else {
-				pe = this.other(player)
+				ue = this.other(player)
 			}
 
-            targetElement.appendChild(pe)
+            targetElement.appendChild(ue)
         }
     }
 
@@ -74,7 +74,7 @@ export default class Util {
 	}
 
 	static updateOther(other) {
-		players[other.id] = other
+		users[other.id] = other
 		let otherElement = document.getElementById(other.id)
 		otherElement.setAttribute('position', other.position)
 		otherElement.setAttribute('rotation', other.rotation)

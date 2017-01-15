@@ -1,5 +1,5 @@
 import aframe from 'aframe'
-import Player from './player'
+import User from './user'
 import UserService from './UserService'
 import socketio from 'socket.io-client'
 import Util from './util'
@@ -19,9 +19,9 @@ socket.on('connect', function(){
     connectedServer()
 })
 
-socket.on('init_players', function (users){
+socket.on('init_users', function (users){
     window.UserService.users = users
-	Util.initPlayerArea(window.player, window.UserService.users)
+	Util.initUserArea(window.player, window.UserService.users)
 })
 
 socket.on('init_other', function(other) {
@@ -41,7 +41,7 @@ function connectedServer() {
     window.peer = new Peer({ key: 'f42387e2-4c9f-4951-bce2-cc7802643eba', debug: 1})
 
     window.peer.on('open', function(){
-        window.player = new Player(window.peer.id)
+        window.player = new User(window.peer.id)
 		window.UserService = new UserService(window.player.id)
         socket.emit('login', window.player)
     })
