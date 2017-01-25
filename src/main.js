@@ -1,5 +1,5 @@
 import aframe from 'aframe'
-import UserService from './UserService'
+import UserService from './userservice'
 import socketio from 'socket.io-client'
 import Util from './util'
 
