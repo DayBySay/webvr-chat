@@ -61,4 +61,8 @@ export default class UserService {
 		let oe = document.getElementById(other.id)
 		oe.parentNode.removeChild(oe)
 	}
+
+	userWithPeerId(id) {
+		return document.getElementById(id)
+	}
 }

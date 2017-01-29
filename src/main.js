@@ -50,9 +50,8 @@ function initPeer() {
         call.on('stream', function(stream){
             console.log('id: ' + call.peer + ' にcallされて繋がったよ！')
             let audio = Util.audioElementWithPeerID(call.peer)
-            audio.srcObject = stream
-            audio.play()
-            document.getElementById('audio-area').appendChild(audio)
+			audio.setAttribute("src", window.URL.createObjectURL(stream))
+			userService.appendChild(audio)
         })
     })
 
